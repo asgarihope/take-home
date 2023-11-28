@@ -22,7 +22,7 @@ return new class extends Migration {
 			$table->string('title');
 			$table->string('category_id');
 			$table->longText('body');
-			$table->string('image');
+			$table->string('image')->nullable();
 			$table->string('url');
 			$table->string('author');
 			$table->datetimes('published_at');
