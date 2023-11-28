@@ -13,7 +13,7 @@ return new class extends Migration {
 	public function up(): void {
 		Schema::create('news', function (Blueprint $table) {
 			$table->id();
-			$table->string('third_party_id');
+			$table->string('provider_news_id');
 			$table->enum('provider', [
 				ProviderEnum::NEWS_API,
 				ProviderEnum::NEW_YORK_TIMES,

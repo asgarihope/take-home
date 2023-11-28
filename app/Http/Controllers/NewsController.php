@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\NewsServiceInterface;
 use App\Contracts\RequestUtilsInterface;
 use App\Enums\NewsResourceEnum;
 use App\Http\Requests\NewsFilterRequest;
-use Illuminate\Http\Request;
+use App\Services\Contracts\NewsServiceInterface;
 
 class NewsController extends Controller {
 

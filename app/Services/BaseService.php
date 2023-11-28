@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\BaseServiceInterface;
+use App\Services\Contracts\BaseServiceInterface;
 
 class BaseService implements BaseServiceInterface {
 

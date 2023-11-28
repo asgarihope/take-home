@@ -10,10 +10,9 @@ class News extends Model {
 	use HasFactory;
 
 	protected $fillable = [
-		'third_party_id',
+		'provider_news_id',
 		'provider',
 		'title',
-		'category_id',
 		'body',
 		'image',
 		'url',

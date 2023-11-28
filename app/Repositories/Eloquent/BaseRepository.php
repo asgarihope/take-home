@@ -1,48 +1,40 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
-use App\Contracts\BaseRepositoryInterface;
 use App\Enums\ResourceSearchOperatorsEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\AbstractPaginator;
 
-class _MainRepository implements BaseRepositoryInterface {
+class BaseRepository {
 
 	protected $model;
 	protected $builder;
 
 	public function __construct(Model $model) {
-		parent::__construct($model);
+		$this->model   = $model;
 		$this->builder = $this->model->newQuery();
 	}
 
-	public function create(array $attributes): Model {
+	protected function create(array $attributes): Model {
 		$this->model = $this->model->create($attributes);
 
 		return $this->model->refresh();
 	}
 
-	public function update(array $attributes): bool {
+	protected function update(array $attributes): bool {
 		return $this->model->whereId($attributes['id'])->update($attributes);
 	}
 
-	public function getPaginatedResources(
-		int    $count,
-		int    $page,
-		array  $columns,
-		string $search = null,
-		array  $relations = []
-	): AbstractPaginator {
-		$builder = $this->model->newQuery();
-		if (!is_null($search)) {
-			$builder = $builder->where('name', 'like', "%$search%");
-		}
-
-		return $builder->with($relations)->orderByDesc('id')->paginate($count, $columns, 'page', $page);
+	protected function delete(int $modelID): bool {
+		return $this->model->whereId($modelID)->delete();
 	}
 
-	public function getFilteredResources(
+	protected function findByID(int $modelID): Model {
+		return $this->model->whereId($modelID)->firstOrFail();
+	}
+
+	protected function getFilteredResources(
 		array $filters,
 		array $columns = ['*'],
 		array $relations = [],
