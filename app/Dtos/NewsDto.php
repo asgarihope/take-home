@@ -7,8 +7,10 @@ use App\Models\NewsCategory;
 class NewsDto {
 
 	public function __construct(
-		int     $id,
+		?int    $id,
+		int     $provider_news_id,
 		string  $provider,
+		string  $source,
 		string  $title,
 		string  $category,
 		string  $body,
@@ -18,6 +20,5 @@ class NewsDto {
 		string  $published_at,
 	) {
 	}
-
 
 }

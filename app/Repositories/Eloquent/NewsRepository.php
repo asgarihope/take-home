@@ -9,6 +9,10 @@ use Illuminate\Pagination\AbstractPaginator;
 
 class NewsRepository extends BaseRepository implements NewsRepositoryInterface {
 
+	public function __construct(News $model) {
+		parent::__construct($model);
+	}
+
 	public function createNews(string $provider_news_id, string $provider, string $title, string $body, string $image, string $url, string $author, string $published_at,): Model|News {
 		return $this->create([
 			'provider_news_id' => $provider_news_id,

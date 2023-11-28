@@ -11,7 +11,9 @@ class News extends Model {
 
 	protected $fillable = [
 		'provider_news_id',
+		'category',
 		'provider',
+		'source',
 		'title',
 		'body',
 		'image',
@@ -20,7 +22,4 @@ class News extends Model {
 		'published_at',
 	];
 
-	public function category() {
-		return $this->hasMany(NewsCategory::class);
-	}
 }

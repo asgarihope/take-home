@@ -19,11 +19,12 @@ return new class extends Migration {
 				ProviderEnum::NEW_YORK_TIMES,
 				ProviderEnum::GUARDIAN
 			]);
+			$table->string('source');
 			$table->string('title');
-			$table->string('category_id');
+			$table->string('category');
 			$table->longText('body');
 			$table->string('image')->nullable();
-			$table->string('url');
+			$table->text('url'); // the URLs in news api more than 255 char
 			$table->string('author');
 			$table->datetimes('published_at');
 

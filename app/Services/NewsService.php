@@ -42,7 +42,9 @@ class NewsService extends BaseService implements NewsServiceInterface {
 
 		return new NewsDto(
 			$newsModel->id,
+			$newsModel->provider_news_id,
 			$newsModel->provider,
+			$newsModel->source,
 			$newsModel->title,
 			$newsModel->category->name,
 			$newsModel->body,
@@ -83,7 +85,9 @@ class NewsService extends BaseService implements NewsServiceInterface {
 		)->map(function ($news) {
 			return new NewsDto(
 				$news->id,
+				$news->provider_news_id,
 				$news->provider,
+				$news->source,
 				$news->title,
 				$news->category->name,
 				$news->body,
