@@ -22,16 +22,8 @@ class BaseRepository {
 		return $this->model->refresh();
 	}
 
-	protected function update(array $attributes): bool {
-		return $this->model->whereId($attributes['id'])->update($attributes);
-	}
-
-	protected function delete(int $modelID): bool {
-		return $this->model->whereId($modelID)->delete();
-	}
-
-	protected function findByID(int $modelID): Model {
-		return $this->model->whereId($modelID)->firstOrFail();
+	protected function findBy(string $modelAttribute,string $modelValue): bool {
+		return $this->model->query()->where($modelAttribute,$modelValue)->exists();
 	}
 
 	protected function getFilteredResources(

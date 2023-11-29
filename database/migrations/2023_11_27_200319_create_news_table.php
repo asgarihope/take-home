@@ -26,7 +26,7 @@ return new class extends Migration {
 			$table->string('image')->nullable();
 			$table->text('url'); // the URLs in news api more than 255 char
 			$table->string('author');
-			$table->datetimes('published_at');
+			$table->dateTime('published_at');
 
 			$table->timestamps();
 		});

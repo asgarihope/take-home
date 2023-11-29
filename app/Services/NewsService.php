@@ -2,36 +2,49 @@
 
 namespace App\Services;
 
+use App\Contracts\NewsProviderFactoryInterface;
 use App\Dtos\NewsDto;
 use App\Repositories\Contracts\NewsRepositoryInterface;
 use App\Services\Contracts\NewsServiceInterface;
+use Carbon\Carbon;
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\AbstractPaginator;
 
 class NewsService extends BaseService implements NewsServiceInterface {
 
 	private NewsRepositoryInterface $newsRepository;
+	private NewsProviderFactoryInterface $newsProviderFactory;
+	private ConfigRepository $configRepository;
 
 	public function __construct(
-		NewsRepositoryInterface $newsRepository,
+		ConfigRepository             $configRepository,
+		NewsProviderFactoryInterface $providerFactory,
+		NewsRepositoryInterface      $newsRepository,
 	) {
 		parent::__construct();
-		$this->newsRepository = $newsRepository;
+		$this->newsRepository      = $newsRepository;
+		$this->newsProviderFactory = $providerFactory;
+		$this->configRepository    = $configRepository;
 	}
 
 	public function createNews(
 		string $provider_news_id,
 		string $provider,
+		string $source,
+		string $category,
 		string $title,
 		string $body,
 		string $image,
 		string $url,
 		string $author,
 		string $published_at,
-	): NewsDto {
+	): ?NewsDto {
 		$newsModel = $this->newsRepository->createNews(
 			$provider_news_id,
 			$provider,
+			$source,
+			$category,
 			$title,
 			$body,
 			$image,
@@ -99,27 +112,22 @@ class NewsService extends BaseService implements NewsServiceInterface {
 		});
 	}
 
-	public function updateNews(
-		int    $newsID,
-		string $provider_news_id,
-		string $provider,
-		string $title,
-		string $body,
-		string $image,
-		string $url,
-		string $author,
-		string $published_at,
-	): bool {
-		return $this->newsRepository->updateNews(
-			$newsID,
-			$provider_news_id,
-			$provider,
-			$title,
-			$body,
-			$image,
-			$url,
-			$author,
-			$published_at
-		);
+	public function fetchNews(): Collection {
+		$allNews   = Collection::make();
+		$providers = $this->configRepository->get('news.providers');
+		$this->newsProviderFactory->setProviders($providers);
+		foreach ($providers as $provider => $providerClass) {
+			$newsProvider = $this->newsProviderFactory->create($provider);
+			$news         = $newsProvider->fetchNews();
+			$news         = $news->map(function ($item) {
+				$item->published_at = Carbon::make($item->published_at);
+				return $item;
+			});
+			$allNews      = $allNews->merge($news)->sort(function ($item) {
+				return $item->published_at;
+			});
+		}
+
+		return $allNews;
 	}
 }

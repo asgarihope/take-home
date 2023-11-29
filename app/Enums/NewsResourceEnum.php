@@ -23,7 +23,7 @@ final class NewsResourceEnum {
 	const filterableColumns = [
 		self::ID           => ['column' => 'id', 'type' => ResourceSearchOperatorsEnum::EQUAL_TO],
 		self::TITLE        => ['column' => 'title', 'type' => ResourceSearchOperatorsEnum::LIKE],
-		self::CATEGORY     => ['column' => 'name', 'type' => ResourceSearchOperatorsEnum::IN_RELATION_LIST],
+		self::CATEGORY     => ['column' => 'category', 'type' => ResourceSearchOperatorsEnum::EQUAL_TO],
 		self::PUBLISHED_AT => ['column' => 'published_at', 'type' => ResourceSearchOperatorsEnum::BETWEEN_DATE],
 
 	];

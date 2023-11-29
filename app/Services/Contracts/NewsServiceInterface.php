@@ -3,20 +3,23 @@
 namespace App\Services\Contracts;
 
 use App\Dtos\NewsDto;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\AbstractPaginator;
 
-interface NewsServiceInterface {
+interface NewsServiceInterface extends CrawlerNewsServiceInterface {
 
 	public function createNews(
 		string $provider_news_id,
 		string $provider,
+		string $source,
+		string $category,
 		string $title,
 		string $body,
 		string $image,
 		string $url,
 		string $author,
 		string $published_at,
-	): NewsDto;
+	): ?NewsDto;
 
 	public function getFilteredNews(
 		array $filters,
@@ -25,15 +28,4 @@ interface NewsServiceInterface {
 		int   $perPage
 	): AbstractPaginator;
 
-	public function updateNews(
-		int    $newsID,
-		string $provider_news_id,
-		string $provider,
-		string $title,
-		string $body,
-		string $image,
-		string $url,
-		string $author,
-		string $published_at,
-	): bool;
 }

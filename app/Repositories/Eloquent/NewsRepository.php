@@ -13,34 +13,23 @@ class NewsRepository extends BaseRepository implements NewsRepositoryInterface {
 		parent::__construct($model);
 	}
 
-	public function createNews(string $provider_news_id, string $provider, string $title, string $body, string $image, string $url, string $author, string $published_at,): Model|News {
-		return $this->create([
-			'provider_news_id' => $provider_news_id,
-			'provider'         => $provider,
-			'title'            => $title,
-			'body'             => $body,
-			'image'            => $image,
-			'url'              => $url,
-			'author'           => $author,
-			'published_at'     => $published_at,
-		]);
-	}
-
-	public function updateNews(
-		int    $newsID,
+	public function createNews(
 		string $provider_news_id,
 		string $provider,
+		string $source,
+		string $category,
 		string $title,
 		string $body,
 		string $image,
 		string $url,
 		string $author,
 		string $published_at,
-	): bool {
-		return $this->update([
-			'id'               => $newsID,
+	): Model|News {
+		return $this->create([
 			'provider_news_id' => $provider_news_id,
 			'provider'         => $provider,
+			'source'           => $source,
+			'category'         => $category,
 			'title'            => $title,
 			'body'             => $body,
 			'image'            => $image,
@@ -50,12 +39,8 @@ class NewsRepository extends BaseRepository implements NewsRepositoryInterface {
 		]);
 	}
 
-	public function deleteNews(int $newsID): bool {
-		return $this->delete($newsID);
-	}
-
-	public function getNews(int $newsID): Model|News {
-		return $this->findByID($newsID);
+	public function checkNewsIsExist(string $providerNewsID): bool {
+		return $this->findBy('provider_news_id', $providerNewsID);
 	}
 
 	public function getFilteredNews(
