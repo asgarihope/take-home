@@ -32,19 +32,25 @@ class NewsController extends Controller {
 	}
 
 	public function index(NewsFilterRequest $request) {
-		$this->requestUtils->setRequest($request)
-			->makeResourceSearchFromRequest(NewsResourceEnum::filterableColumns);
+		try {
 
-		$sorts   = NewsResourceEnum::sortableColumns[$request->input('sort', 'default')];
-		$filters = $request->only(array_keys(NewsResourceEnum::filterableColumns));
+			$this->requestUtils->setRequest($request)
+				->makeResourceSearchFromRequest(NewsResourceEnum::filterableColumns);
 
-		$items = $this->newsService->getFilteredNews(
-			$filters,
-			$sorts,
-			request('page', 1),
-			request('perPage', 12)
-		);
-		dd($items);
+			$sorts   = NewsResourceEnum::sortableColumns[$request->input('sort', 'default')];
+			$filters = $request->only(array_keys(NewsResourceEnum::filterableColumns));
+
+			$items = $this->newsService->getFilteredNews(
+				$filters,
+				$sorts,
+				request('page', 1),
+				request('perPage', 12)
+			);
+			dd($items);
+		}catch (\Throwable $throwable){
+			dd($throwable);
+		}
+
 
 	}
 

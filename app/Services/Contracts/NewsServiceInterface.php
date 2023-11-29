@@ -3,8 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Dtos\NewsDto;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Collection;
 
 interface NewsServiceInterface extends CrawlerNewsServiceInterface {
 
@@ -26,6 +25,6 @@ interface NewsServiceInterface extends CrawlerNewsServiceInterface {
 		array $sorts,
 		int   $page,
 		int   $perPage
-	): AbstractPaginator;
+	): Collection;
 
 }

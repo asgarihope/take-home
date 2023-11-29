@@ -8,8 +8,7 @@ use App\Repositories\Contracts\NewsRepositoryInterface;
 use App\Services\Contracts\NewsServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Collection;
 
 class NewsService extends BaseService implements NewsServiceInterface {
 
@@ -73,36 +72,37 @@ class NewsService extends BaseService implements NewsServiceInterface {
 	 * @param array $sorts
 	 * @param int $page
 	 * @param int $perPage
-	 * @return AbstractPaginator
 	 * @return Collection<NewsDto>
 	 */
-	public function getFilteredNews(array $filters, array $sorts, int $page, int $perPage): AbstractPaginator {
+	public function getFilteredNews(array $filters, array $sorts, int $page, int $perPage): Collection {
 		return $this->newsRepository->getFilteredNews(
 			$filters,
 			[
 				'id',
 				'provider',
+				'provider_news_id',
 				'title',
+				'category',
+				'source',
 				'body',
 				'image',
 				'url',
 				'author',
 				'published_at'
 			],
-			[
-				'category'
-			],
+			[],
 			$sorts,
 			$page,
 			$perPage
 		)->map(function ($news) {
+//			dd($news);
 			return new NewsDto(
 				$news->id,
 				$news->provider_news_id,
 				$news->provider,
 				$news->source,
 				$news->title,
-				$news->category->name,
+				$news->category,
 				$news->body,
 				$news->image,
 				$news->url,
@@ -121,6 +121,7 @@ class NewsService extends BaseService implements NewsServiceInterface {
 			$news         = $newsProvider->fetchNews();
 			$news         = $news->map(function ($item) {
 				$item->published_at = Carbon::make($item->published_at);
+
 				return $item;
 			});
 			$allNews      = $allNews->merge($news)->sort(function ($item) {
