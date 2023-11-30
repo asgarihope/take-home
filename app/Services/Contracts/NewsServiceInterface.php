@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\Dtos\NewsDto;
+use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
 
 interface NewsServiceInterface extends CrawlerNewsServiceInterface {

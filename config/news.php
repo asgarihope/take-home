@@ -7,6 +7,7 @@ use App\Providers\News\NYTimes_NewsProvider;
 
 return [
 
+	'news_schedule'=>env('NEWS_SCHEDULE_EVERY_MINUTES'),
 	'providers' => [
 		ProviderEnum::NEWS_API       => NewsAPI_NewsProvider::class,
 		ProviderEnum::GUARDIAN       => Guardian_NewsProvider::class,

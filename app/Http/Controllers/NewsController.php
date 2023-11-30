@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\RequestUtilsInterface;
+use App\Enums\LogChannelEnum;
 use App\Enums\NewsResourceEnum;
 use App\Http\Requests\NewsFilterRequest;
+use App\Http\Resources\NewsCollection;
 use App\Jobs\StoreNewsJob;
 use App\Providers\News\Contracts\NewsProviderInterface;
 use App\Providers\News\Guardian_NewsProvider;
@@ -14,9 +16,11 @@ use App\Services\Contracts\CrawlerNewsServiceInterface;
 use App\Services\Contracts\NewsServiceInterface;
 use App\Services\NewsService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class NewsController extends Controller {
 
+	private const PerPage = 10;
 	private NewsServiceInterface $newsService;
 	private RequestUtilsInterface $requestUtils;
 	private CrawlerNewsServiceInterface $crawlerNewsService;
@@ -33,24 +37,27 @@ class NewsController extends Controller {
 
 	public function index(NewsFilterRequest $request) {
 		try {
-
 			$this->requestUtils->setRequest($request)
 				->makeResourceSearchFromRequest(NewsResourceEnum::filterableColumns);
 
 			$sorts   = NewsResourceEnum::sortableColumns[$request->input('sort', 'default')];
 			$filters = $request->only(array_keys(NewsResourceEnum::filterableColumns));
 
-			$items = $this->newsService->getFilteredNews(
+			$news = $this->newsService->getFilteredNews(
 				$filters,
 				$sorts,
 				request('page', 1),
-				request('perPage', 12)
+				request('perPage', NewsController::PerPage)
 			);
-			dd($items);
-		}catch (\Throwable $throwable){
-			dd($throwable);
-		}
+//dd($news);
+			NewsCollection::wrap('items');
 
+			return NewsCollection::collection($news);
+		} catch (\Throwable $throwable) {
+			dd($throwable);
+			Log::channel(LogChannelEnum::LOG)->error($throwable->getMessage(), [$throwable]);
+			throw new \Exception(trans('message.serviceNotAvailable'));
+		}
 
 	}
 

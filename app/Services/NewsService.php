@@ -8,6 +8,7 @@ use App\Repositories\Contracts\NewsRepositoryInterface;
 use App\Services\Contracts\NewsServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
 
 class NewsService extends BaseService implements NewsServiceInterface {
@@ -75,7 +76,7 @@ class NewsService extends BaseService implements NewsServiceInterface {
 	 * @return Collection<NewsDto>
 	 */
 	public function getFilteredNews(array $filters, array $sorts, int $page, int $perPage): Collection {
-		return $this->newsRepository->getFilteredNews(
+		$res= $this->newsRepository->getFilteredNews(
 			$filters,
 			[
 				'id',
@@ -94,8 +95,13 @@ class NewsService extends BaseService implements NewsServiceInterface {
 			$sorts,
 			$page,
 			$perPage
-		)->map(function ($news) {
-//			dd($news);
+		);
+//		dd($res);
+//		return  nw
+		return $res->appends([
+//			'currentPage'=>$res->currentPage,
+//			'lastPage'=>$res->lastPage,
+		])->map(function ($news) {
 			return new NewsDto(
 				$news->id,
 				$news->provider_news_id,

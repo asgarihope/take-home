@@ -22,14 +22,11 @@ class NewsFilterRequest extends FormRequest {
 	public function rules(): array {
 		return [
 
-			NewsResourceEnum::TITLE                   => ['sometimes', 'nullable', 'string', 'max:255'],
-			NewsResourceEnum::BODY                    => ['sometimes', 'nullable', 'string', 'max:255'],
-			NewsResourceEnum::AUTHOR                  => ['sometimes', 'nullable', 'string', 'size:255'],
-			NewsResourceEnum::CATEGORY                => ['sometimes', 'nullable', 'size:255'],
-			NewsResourceEnum::PUBLISHED_AT            => ['sometimes', 'nullable', 'array', 'size:2'],
-			NewsResourceEnum::PUBLISHED_AT . '.year'  => ['nullable', 'numeric'],
-			NewsResourceEnum::PUBLISHED_AT . '.month' => ['nullable', 'numeric'],
-			NewsResourceEnum::PUBLISHED_AT . '.day'   => ['nullable', 'numeric'],
+			NewsResourceEnum::TITLE        => ['sometimes', 'nullable', 'string', 'max:255'],
+			NewsResourceEnum::BODY         => ['sometimes', 'nullable', 'string', 'max:255'],
+			NewsResourceEnum::AUTHOR       => ['sometimes', 'nullable', 'string', 'size:255'],
+			NewsResourceEnum::CATEGORY     => ['sometimes', 'nullable', 'size:255'],
+			NewsResourceEnum::PUBLISHED_AT => ['sometimes', 'nullable', 'array', 'size:2'],
 
 			'sort' => ['sometimes', 'nullable', 'in:' . implode(',', array_keys(NewsResourceEnum::sortableColumns))],
 		];
