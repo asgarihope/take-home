@@ -75,8 +75,8 @@ class NewsService extends BaseService implements NewsServiceInterface {
 	 * @param int $perPage
 	 * @return Collection<NewsDto>
 	 */
-	public function getFilteredNews(array $filters, array $sorts, int $page, int $perPage): Collection {
-		$res= $this->newsRepository->getFilteredNews(
+	public function getFilteredNews(array $filters, array $sorts, int $page, int $perPage): AbstractPaginator {
+		$res = $this->newsRepository->getFilteredNews(
 			$filters,
 			[
 				'id',
@@ -96,12 +96,8 @@ class NewsService extends BaseService implements NewsServiceInterface {
 			$page,
 			$perPage
 		);
-//		dd($res);
-//		return  nw
-		return $res->appends([
-//			'currentPage'=>$res->currentPage,
-//			'lastPage'=>$res->lastPage,
-		])->map(function ($news) {
+
+		return $res->setCollection(collect($res->items())->map(function ($news) {
 			return new NewsDto(
 				$news->id,
 				$news->provider_news_id,
@@ -115,7 +111,7 @@ class NewsService extends BaseService implements NewsServiceInterface {
 				$news->author,
 				$news->published_at,
 			);
-		});
+		}));
 	}
 
 	public function fetchNews(): Collection {

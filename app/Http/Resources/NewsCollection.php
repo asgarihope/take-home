@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class NewsCollection extends JsonResource {
 
@@ -15,8 +14,8 @@ class NewsCollection extends JsonResource {
 	 */
 	public function toArray(Request $request): array {
 		return [
-			'localId'    => $this->id,
-			'newsId'     => $this->provider_news_id,
+			'localId'     => $this->id,
+			'newsId'      => $this->provider_news_id,
 			'provider'    => $this->provider,
 			'title'       => $this->title,
 			'body'        => $this->body,

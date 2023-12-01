@@ -49,28 +49,14 @@ class NewsController extends Controller {
 				request('page', 1),
 				request('perPage', NewsController::PerPage)
 			);
-//dd($news);
+
 			NewsCollection::wrap('items');
 
 			return NewsCollection::collection($news);
 		} catch (\Throwable $throwable) {
-			dd($throwable);
 			Log::channel(LogChannelEnum::LOG)->error($throwable->getMessage(), [$throwable]);
 			throw new \Exception(trans('message.serviceNotAvailable'));
 		}
 
-	}
-
-	public function test() {
-		$res = $this->crawlerNewsService->fetchNews();
-//			foreach ($res as $newsItem) {
-//				StoreNewsJob::dispatch($newsItem)
-		;
-////					->onQueue(QueueEnum::NEWS_PROCESSING);
-//			}
-		$a = $res->map(function ($i) {
-			return $i->provider;
-		})->toArray();
-		dd($a);
 	}
 }

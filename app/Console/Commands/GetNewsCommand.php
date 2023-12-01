@@ -37,10 +37,9 @@ class GetNewsCommand extends Command {
 	 */
 	public function handle() {
 		$newsFromSources = $this->newsService->fetchNews();
-//		dd($newsFromSources);
+
 		foreach ($newsFromSources as $newsItem) {
 			StoreNewsJob::dispatch($newsItem)->onQueue(QueueEnum::NEWS_PROCESSING);
 		}
-		echo count($newsFromSources).' The News Added :)';
 	}
 }

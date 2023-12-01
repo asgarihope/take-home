@@ -38,7 +38,7 @@ class Guardian_NewsProvider extends NewsProvider implements NewsProviderInterfac
 			$response = Http::withHeaders([
 				'Content-Type' => 'application/json'
 			])->throw()->get($URL);
-			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' sended');
+			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' the request sent via provider: '.ProviderEnum::GUARDIAN);
 
 			if (isset($response->object()->response, $response->object()->response->status, $response->object()->response->results) && $response->object()->response->status === 'ok') {
 				return Collection::make($response->object()->response->results)->map(function ($news) {
@@ -59,8 +59,6 @@ class Guardian_NewsProvider extends NewsProvider implements NewsProviderInterfac
 			}
 			throw new NewsReaderException(trans('message.responseIsInvalid'), 400);
 		} catch (\Exception  $exception) {
-			dd($exception);
-
 			Log::error($exception->getMessage(), ['exception' => $exception]);
 
 			return Collection::make();

@@ -39,7 +39,7 @@ class NYTimes_NewsProvider extends NewsProvider implements NewsProviderInterface
 			$response = Http::withHeaders([
 				'Content-Type' => 'application/json',
 			])->get($URL);
-			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' sended');
+			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' the request sent via provider: ' . ProviderEnum::NEW_YORK_TIMES);
 
 			if (isset($response->object()->status, $response->object()->response, $response->object()->response->docs) && $response->object()->status === 'OK') {
 				return Collection::make($response->object()->response->docs)->map(function ($news) {
@@ -47,9 +47,9 @@ class NYTimes_NewsProvider extends NewsProvider implements NewsProviderInterface
 						null,
 						$news->_id,
 						ProviderEnum::NEW_YORK_TIMES,
-						$news->source??'',
+						$news->source ?? '',
 						$news->headline->main,
-						$news->type_of_material??'',
+						$news->type_of_material ?? '',
 						$news->abstract,
 						collect($news->multimedia)->first() ? 'https://static01.nyt.com/' . collect($news->multimedia)->first()->url : '',
 						$news->web_url,
@@ -62,7 +62,6 @@ class NYTimes_NewsProvider extends NewsProvider implements NewsProviderInterface
 			}
 			throw new NewsReaderException(trans('message.responseIsInvalid'), 400);
 		} catch (\Exception  $exception) {
-			dd($exception);
 			Log::error($exception->getMessage(), ['exception' => $exception]);
 
 			return Collection::make();

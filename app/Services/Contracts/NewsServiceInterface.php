@@ -26,6 +26,6 @@ interface NewsServiceInterface extends CrawlerNewsServiceInterface {
 		array $sorts,
 		int   $page,
 		int   $perPage
-	): Collection;
+	): AbstractPaginator;
 
 }

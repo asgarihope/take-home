@@ -3,12 +3,14 @@
 namespace App\Jobs;
 
 use App\Dtos\NewsDto;
+use App\Enums\LogChannelEnum;
 use App\Repositories\Contracts\NewsRepositoryInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class StoreNewsJob implements ShouldQueue {
 
@@ -29,7 +31,7 @@ class StoreNewsJob implements ShouldQueue {
 	public function handle(NewsRepositoryInterface $newsRepository): void {
 		if (!$newsRepository->checkNewsIsExist($this->newsData->provider_news_id)) {
 
-			$newsRepository->createNews(
+			$news = $newsRepository->createNews(
 				$this->newsData->provider_news_id,
 				$this->newsData->provider,
 				$this->newsData->source,
@@ -41,6 +43,7 @@ class StoreNewsJob implements ShouldQueue {
 				$this->newsData->author,
 				$this->newsData->published_at
 			);
+			Log::channel(LogChannelEnum::LOG)->info('The news added by Id:' . $news->id);
 		}
 	}
 }

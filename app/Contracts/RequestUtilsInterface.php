@@ -15,15 +15,5 @@ interface RequestUtilsInterface {
 	public function convertToFilterFormat(string $parameter, $input): bool;
 
 	public function makeResourceSearchFromRequest(array $filterableColumns): void;
-//
-//	public function convertBooleanInputs(array $parameters, $fillWithFalse = false): void;
-//
-//
-//	public function convertToRangeFilterFormat(string $parameter, $input): bool;
-//
-//	public function maskSensitiveInputs(array $requestBag, string $pattern): array;
-//
-//	public function setResourceDescription(string $key, int $resourceId, string $resourceType): void;
-//
-//	public function convertToListFormat(array $parameters);
+
 }

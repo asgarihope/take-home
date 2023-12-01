@@ -41,7 +41,7 @@ class NewsAPI_NewsProvider extends NewsProvider implements NewsProviderInterface
 				'Content-Type' => 'application/json',
 				'x-api-key'    => $this->API_KEY
 			])->get($URL);
-			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' sended');
+			Log::channel(LogChannelEnum::LOG)->info(ProviderEnum::NEWS_API . ' the request sent via provider: '.ProviderEnum::NEWS_API);
 			if (isset($response->object()->status, $response->object()->articles) && $response->object()->status === 'ok') {
 				return Collection::make($response->object()->articles)->map(function ($news) {
 					return new NewsDto(
@@ -61,8 +61,6 @@ class NewsAPI_NewsProvider extends NewsProvider implements NewsProviderInterface
 			}
 			throw new NewsReaderException(trans('message.responseIsInvalid'), 400);
 		} catch (\Exception  $exception) {
-			dd($exception);
-
 			Log::error($exception->getMessage(), ['exception' => $exception]);
 
 			return Collection::make();
