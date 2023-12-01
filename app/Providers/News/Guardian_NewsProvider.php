@@ -16,14 +16,13 @@ use Illuminate\Support\Facades\Log;
 class Guardian_NewsProvider extends NewsProvider implements NewsProviderInterface {
 
 	private const PAGE_SIZE = 10;
-	private ConfigRepository $configRepository;
 	private string $API_KEY;
 	private string $BASE_URL;
 
 	public function __construct(
 		ConfigRepository $configRepository,
 	) {
-		$this->configRepository = $configRepository;
+		parent::__construct($configRepository);
 		$this->BASE_URL         = $this->configRepository->get('news.' . ProviderEnum::GUARDIAN . '.url');
 		$this->API_KEY          = $this->configRepository->get('news.' . ProviderEnum::GUARDIAN . '.token');
 	}

@@ -12,11 +12,9 @@ use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class NYTimes_NewsProvider extends NewsProvider implements NewsProviderInterface {
 
-	private ConfigRepository $configRepository;
 	private string $API_KEY;
 	private string $BASE_URL;
 	private string $ACTIVE;
@@ -25,6 +23,7 @@ class NYTimes_NewsProvider extends NewsProvider implements NewsProviderInterface
 	public function __construct(
 		ConfigRepository $configRepository,
 	) {
+		parent::__construct($configRepository);
 		$this->configRepository = $configRepository;
 		$this->BASE_URL         = $this->configRepository->get('news.' . ProviderEnum::NEW_YORK_TIMES . '.url');
 		$this->API_KEY          = $this->configRepository->get('news.' . ProviderEnum::NEW_YORK_TIMES . '.token');

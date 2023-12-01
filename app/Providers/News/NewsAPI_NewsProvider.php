@@ -18,14 +18,13 @@ class NewsAPI_NewsProvider extends NewsProvider implements NewsProviderInterface
 
 	private const CATEGORY = 'abc-news';
 	private const PAGE_SIZE = 10;
-	private ConfigRepository $configRepository;
 	private string $API_KEY;
 	private string $BASE_URL;
 
 	public function __construct(
 		ConfigRepository $configRepository,
 	) {
-		$this->configRepository = $configRepository;
+		parent::__construct($configRepository);
 		$this->BASE_URL         = $this->configRepository->get('news.' . ProviderEnum::NEWS_API . '.url');
 		$this->API_KEY          = $this->configRepository->get('news.' . ProviderEnum::NEWS_API . '.token');
 	}

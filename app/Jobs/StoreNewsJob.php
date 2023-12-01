@@ -43,7 +43,7 @@ class StoreNewsJob implements ShouldQueue {
 				$this->newsData->author,
 				$this->newsData->published_at
 			);
-			Log::channel(LogChannelEnum::LOG)->info('The news added by Id:' . $news->id);
+			Log::channel(LogChannelEnum::LOG)->info('The news added by Id:' . $news->id . ' And its provider is:' . $news->provider);
 		}
 	}
 }
